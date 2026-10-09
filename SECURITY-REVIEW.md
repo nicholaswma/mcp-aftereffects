@@ -33,3 +33,17 @@ AE scripts execute with the user's permissions. The mailbox is a trust boundary:
 Upstream output-path checks are lexical and do not establish a filesystem sandbox, including against symlink aliases. The inspection profile therefore withholds filesystem output tools and the operation dispatcher entirely. Do not treat normal `npm start` or write mode as approved by this review. They retain upstream write capabilities, including menu commands; disabling eval alone does not make them safe.
 
 Live native AE inspection, rendering, edits and undo remain unverified. The excluded transport-offline suite has platform launch behavior; live suites may contact or mutate AE. Neither was run on the user's desktop. Re-run dependency audit and checks whenever updating the fork; zero advisory findings only reflects the database at review time.
+
+## Live inspection follow-up — 2026-10-09
+
+The fork's `scripts/start-inspect.mjs` was launched through a temporary MCP SDK stdio client on macOS. This was a direct session test, not permanent Codex MCP registration.
+
+- `ae_version_info` successfully identified After Effects 26.5x89.
+- `ae_project_info` read the currently open project.
+- `ae_comp_info` read a 1920 × 1080, 24 fps, 7.25-second composition with five layers.
+- `ae_layer_info` read all five layers, including camera position keys, Bezier speed/influence, an expression and effect settings. Calls returned in approximately 0.24–0.33 seconds after the initial connection.
+- A direct attempt to call the withheld `ae_do` tool was rejected with MCP error -32602 (tool not found). No mutation was dispatched.
+- The project reported dirty on the first query. No close, save, new-project, edit or render operation was performed. The initial dirty state was not independently measured before the first bridge call.
+- No resident agent was installed and no application permission was changed. Native UI independently confirmed the same open composition.
+
+Result: native AE inspection works. Rendering, editing and undo are still unverified and should be tested in a disposable project. The current user project was left open. Raw project content and filesystem paths are deliberately excluded from this public report.
