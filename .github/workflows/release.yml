@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   verify:
+    if: github.repository == 'kumoproductions/mcp-aftereffects'
     name: Verify before publish
     runs-on: ubuntu-latest
     permissions:

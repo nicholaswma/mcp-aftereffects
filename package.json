@@ -1,6 +1,7 @@
 {
   "name": "@kumoproductions/mcp-aftereffects",
   "version": "0.3.1",
+  "private": true,
   "description": "TypeScript MCP server for Adobe After Effects (Windows & macOS) — project/comp/layer introspection, atomic undo-grouped operations, JSON project export/import, and single-frame rendering via file IPC.",
   "keywords": [
     "adobe",
@@ -63,7 +64,8 @@
     "prepare": "lefthook install",
     "prepublishOnly": "npm run build",
     "preversion": "node scripts/release-changelog.mjs --check",
-    "version": "node scripts/release-changelog.mjs && node scripts/sync-server-version.mjs && git add CHANGELOG.md server.json"
+    "version": "node scripts/release-changelog.mjs && node scripts/sync-server-version.mjs && git add CHANGELOG.md server.json",
+    "start:inspect": "node scripts/start-inspect.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -72,7 +74,7 @@
   "devDependencies": {
     "@types/node": "^24.0.0",
     "lefthook": "^2.1.6",
-    "oxfmt": "^0.45.0",
+    "oxfmt": "0.72.0",
     "oxlint": "^1.60.0",
     "rimraf": "^6.1.3",
     "typescript": "^6.0.3",

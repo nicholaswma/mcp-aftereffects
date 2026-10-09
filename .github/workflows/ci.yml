@@ -24,7 +24,10 @@ jobs:
           node-version: 24
           cache: npm
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
+
+      - name: Dependency security audit
+        run: npm audit --audit-level=low
 
       - name: Typecheck
         run: npm run typecheck

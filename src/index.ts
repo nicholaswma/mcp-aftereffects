@@ -71,6 +71,10 @@ function register(tool: AnyTool): void {
 const skipped: string[] = [];
 for (const tool of ALL_TOOLS) {
   const denial = denyTool(tool.name, tool.blockedInReadOnly);
+  if (process.env.AE_MCP_INSPECT_ONLY === "1" && tool.effect !== "read") {
+    skipped.push(tool.name);
+    continue;
+  }
   if (denial) {
     skipped.push(tool.name);
     continue;

@@ -147,3 +147,28 @@ describe("mcp server with AE_MCP_READONLY=1 (offline)", () => {
     expect(text).toContain("AE_MCP_READONLY");
   });
 });
+
+describe("fork inspection profile", () => {
+  const client = new McpTestClient();
+  beforeAll(async () => {
+    await client.connect({
+      AE_MCP_READONLY: "1",
+      AE_MCP_ENABLE_EVAL: "0",
+      AE_MCP_INSPECT_ONLY: "1",
+    });
+  });
+  afterAll(async () => {
+    await client.close();
+  });
+  it("withholds the dispatcher and filesystem output tools", async () => {
+    const result = await client.listTools();
+    expect(result.tools.map((tool) => tool.name).toSorted()).toEqual([
+      "ae_catalog",
+      "ae_comp_info",
+      "ae_context",
+      "ae_layer_info",
+      "ae_project_info",
+      "ae_version_info",
+    ]);
+  });
+});
